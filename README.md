@@ -17,7 +17,8 @@ A project for submission in DICODING
 
 #### Example Response API
 
-- Status code : `200`
+- GET /albums/{id}
+  Status code : `200`
 
   ```json
   {
@@ -31,6 +32,54 @@ A project for submission in DICODING
     }
   }
   ```
+
+### Song endpoint management
+
+| Endpoint           | Request   |   Type   | Description       |
+| :----------------- | :-------- | :------: | :---------------- |
+| POST /songs        | title     | `string` | Add song          |
+|                    | year      | `number` |                   |
+|                    | genre     | `string` |                   |
+|                    | performer | `string` |                   |
+|                    | duration  | `number` |                   |
+| GET /songs         | -         |    -     | Get all songs     |
+| GET /songs/{id}    | -         |    -     | Get song by id    |
+| PUT /songs/{id}    | title     | `string` | Edit song by id   |
+|                    | year      | `number` |                   |
+|                    | genre     | `string` |                   |
+|                    | performer | `string` |                   |
+|                    | duration  | `number` |                   |
+| DELETE /songs/{id} | -         |    -     | Delete song by id |
+
+#### Example Response API
+
+- GET /songs
+  Status code : `200`
+
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "songs": {
+        "id": "song-Qbax5Oy7L8WKf74l",
+        "title": "Life in Technicolor",
+        "performer": "Coldplay"
+      },
+      {
+        "id": "song-poax5Oy7L8WKllqw",
+        "title": "Centimeteries of London",
+        "performer": "Coldplay"
+      },
+      {
+        "id": "song-Qalokam7L8WKf74l",
+        "title": "Lost!",
+        "performer": "Coldplay"
+      }
+    }
+  }
+  ```
+
+#### Example Error Response API
 
 - Status code : `400 & 404`
   ```json
