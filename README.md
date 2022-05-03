@@ -15,35 +15,35 @@ A project for submission in DICODING
 |                     | year    | `number` |                    |
 | DELETE /albums/{id} | -       |    -     | Delete album by id |
 
-Example :
+#### Example Response API
 
-- URL
+- Status code : `200`
 
-  /users/:id
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "album": {
+        "id": "album-taN5xRLEqObTSQrc",
+        "name": "Viva la vida",
+        "year": 2008
+      }
+    }
+  }
+  ```
 
-- Method:
+- Status code : `400 & 404`
+  ```json
+  {
+    "status": "fail",
+    "message": "Message Error" // 400: Client Error, 404: NotFoundError
+  }
+  ```
+- Status code : `500`
 
-  GET
-
-* URL Params
-
-  Required:
-
-  `id=[integer]`
-
-* Data Params
-
-  None
-
-* Success Response:
-
-  Code: 200  
-  Content: { id : 12, name : "Michael Bloom" }  
-  Error Response:
-
-  Code: 404 NOT FOUND  
-  Content: { error : "User doesn't exist" }  
-  OR
-
-  Code: 401 UNAUTHORIZED
-  Content: { error : "You are unauthorized to make this request." }
+  ```json
+  {
+    "status": "error",
+    "message": "Maaf, terjadi kegagalan pada server"
+  }
+  ```
