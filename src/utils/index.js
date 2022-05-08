@@ -1,4 +1,12 @@
-const mapDBToAlbumModel = ({ id, name, year, created_at, updated_at }) => ({
+/* eslint-disable camelcase */
+// prettier-ignore
+const mapDBToAlbumModel = ({
+  id,
+  name,
+  year,
+  created_at,
+  updated_at,
+}) => ({
   id,
   name,
   year,

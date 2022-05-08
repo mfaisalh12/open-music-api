@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const ClientError = require('../../exceptions/ClientError');
 
 class AlbumsHandler {
@@ -53,11 +54,11 @@ class AlbumsHandler {
   async getAlbumByIdHandler(request, h) {
     try {
       const { id } = request.params;
-      const album = await this._service.getAlbumById(id);
+      const albums = await this._service.getAlbumById(id);
       return {
         status: 'success',
         data: {
-          album: album,
+          album: albums,
         },
       };
     } catch (error) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const ClientError = require('../../exceptions/ClientError');
 
 class SongsHandler {
@@ -16,7 +17,10 @@ class SongsHandler {
   async postSongHandler(request, h) {
     try {
       this._validator.validateSongPayload(request.payload);
-      const { title, year, genre, performer, duration } = request.payload;
+      // prettier-ignore
+      const {
+        title, year, genre, performer, duration,
+      } = request.payload;
 
       const songId = await this._service.addSong({
         title,
@@ -61,7 +65,7 @@ class SongsHandler {
     const songs = await this._service.getSongs();
     return {
       status: 'success',
-      data: { songs: songs },
+      data: { songs },
     };
   }
 
@@ -74,7 +78,7 @@ class SongsHandler {
       return {
         status: 'success',
         data: {
-          song: song,
+          song,
         },
       };
     } catch (error) {
@@ -102,8 +106,10 @@ class SongsHandler {
   async putSongByIdHandler(request, h) {
     try {
       this._validator.validateSongPayload(request.payload);
-
-      const { title, year, genre, performer, duration } = request.payload;
+      // prettier-ignore
+      const {
+        title, year, genre, performer, duration,
+      } = request.payload;
       const { id } = request.params;
 
       await this._service.editSongById(id, {

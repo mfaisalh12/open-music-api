@@ -1,26 +1,4 @@
-const routes = (handlerAlbum, handlerSong) => [
-  // albums endpoint
-  {
-    method: 'POST',
-    path: '/albums',
-    handler: handlerAlbum.postAlbumHandler,
-  },
-  {
-    method: 'GET',
-    path: '/albums/{id}',
-    handler: handlerAlbum.getAlbumByIdHandler,
-  },
-  {
-    method: 'PUT',
-    path: '/albums/{id}',
-    handler: handlerAlbum.putAlbumByIdHandler,
-  },
-  {
-    method: 'DELETE',
-    path: '/albums/{id}',
-    handler: handlerAlbum.deleteAlbumByIdHandler,
-  },
-
+const routes = (handlerSong) => [
   // song endpoint
   {
     method: 'POST',

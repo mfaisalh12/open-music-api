@@ -1,77 +1,20 @@
+/* eslint-disable no-underscore-dangle */
+
 const { Pool } = require('pg');
 const { nanoid } = require('nanoid');
 const InvariantError = require('../exceptions/InvariantError');
 const NotFoundError = require('../exceptions/NotFoundError');
-const { mapDBToAlbumModel, mapDBtoSongModel } = require('../utils');
+const { mapDBtoSongModel } = require('../utils');
 
-class MusicsService {
+class SongsService {
   constructor() {
     this._pool = new Pool();
   }
 
-  // Albums
-  async addAlbum({ name, year }) {
-    const id = `album-${nanoid(16)}`;
-    const createdAt = new Date().toISOString();
-    const updatedAt = createdAt;
-
-    const query = {
-      text: 'INSERT INTO albums VALUES($1, $2, $3, $4, $5) RETURNING id',
-      values: [id, name, year, createdAt, updatedAt],
-    };
-
-    const result = await this._pool.query(query);
-
-    if (!result.rows[0].id) {
-      throw new InvariantError('Album gagal ditambahkan');
-    }
-
-    return result.rows[0].id;
-  }
-
-  async getAlbumById(id) {
-    const query = {
-      text: 'SELECT id,name,year FROM albums WHERE id = $1',
-      values: [id],
-    };
-    const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Album tidak ditemukan');
-    }
-
-    return result.rows.map(mapDBToAlbumModel)[0];
-  }
-
-  async editAlbumById(id, { name, year }) {
-    const updatedAt = new Date().toISOString();
-    const query = {
-      text: 'UPDATE albums SET name = $1, year = $2, updated_at = $3 WHERE id = $4 RETURNING id',
-      values: [name, year, updatedAt, id],
-    };
-
-    const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Gagal memperbarui album. Id tidak ditemukan');
-    }
-  }
-
-  async deleteAlbumById(id) {
-    const query = {
-      text: 'DELETE FROM albums WHERE id = $1 RETURNING id',
-      values: [id],
-    };
-
-    const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Album gagal dihapus. Id tidak ditemukan');
-    }
-  }
-
-  // Songs
-  async addSong({ title, year, genre, performer, duration }) {
+  // prettier-ignore
+  async addSong({
+    title, year, genre, performer, duration,
+  }) {
     const id = `song-${nanoid(16)}`;
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -99,9 +42,10 @@ class MusicsService {
     return result.rows[0].id;
   }
 
+  // prettier-ignore
   async getSongs() {
     const result = await this._pool.query(
-      'SELECT id, title, performer FROM songs'
+      'SELECT id, title, performer FROM songs',
     );
 
     return result.rows.map(mapDBtoSongModel);
@@ -121,7 +65,10 @@ class MusicsService {
     return result.rows.map(mapDBtoSongModel)[0];
   }
 
-  async editSongById(id, { title, year, genre, performer, duration }) {
+  // prettier-ignore
+  async editSongById(id, {
+    title, year, genre, performer, duration,
+  }) {
     const updatedAt = new Date().toISOString();
     const query = {
       text: 'UPDATE songs SET title = $1, year = $2, genre = $3, performer = $4, duration = $5, updated_at = $6 WHERE id = $7 RETURNING id',
@@ -149,4 +96,4 @@ class MusicsService {
   }
 }
 
-module.exports = MusicsService;
+module.exports = SongsService;
