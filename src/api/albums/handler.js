@@ -55,10 +55,17 @@ class AlbumsHandler {
     try {
       const { id } = request.params;
       const albums = await this._service.getAlbumById(id);
+
+      const albumsProps = albums.map((album) => ({
+        id: album.id,
+        name: album.name,
+        year: album.year,
+      }));
+
       return {
         status: 'success',
         data: {
-          album: albums,
+          album: albumsProps[0],
         },
       };
     } catch (error) {

@@ -19,7 +19,7 @@ class SongsHandler {
       this._validator.validateSongPayload(request.payload);
       // prettier-ignore
       const {
-        title, year, genre, performer, duration,
+        title, year, genre, performer, duration, albumId,
       } = request.payload;
 
       const songId = await this._service.addSong({
@@ -28,6 +28,7 @@ class SongsHandler {
         genre,
         performer,
         duration,
+        albumId,
       });
 
       const response = h.response({
@@ -61,12 +62,45 @@ class SongsHandler {
   }
 
   // get all songs data
-  async getSongsHandler() {
+  async getSongsHandler(request, h) {
+    const { title, performer } = request.query;
+
     const songs = await this._service.getSongs();
-    return {
+
+    let songsFilter = songs;
+    if (title !== undefined) {
+      // prettier-ignore
+      songsFilter = songs.filter((song) => song.title.toLowerCase().includes(title.toLowerCase()));
+    }
+    if (performer !== undefined) {
+      // prettier-ignore
+      songsFilter = songs.filter(
+        (song) => song.performer.toLowerCase().includes(performer.toLowerCase()),
+      );
+    }
+
+    const response = h.response({
       status: 'success',
-      data: { songs },
-    };
+      data: {
+        songs: songsFilter.map((song) => ({
+          id: song.id,
+          title: song.title,
+          performer: song.performer,
+        })),
+      },
+    });
+    response.code(200);
+    return response;
+
+    // const songsProp = songs.map((song) => ({
+    //   id: song.id,
+    //   title: song.title,
+    //   performer: song.performer,
+    // }));
+    // return {
+    //   status: 'success',
+    //   data: { songs: songsProp },
+    // };
   }
 
   async getSongsByIdHandler(request, h) {
@@ -108,7 +142,7 @@ class SongsHandler {
       this._validator.validateSongPayload(request.payload);
       // prettier-ignore
       const {
-        title, year, genre, performer, duration,
+        title, year, genre, performer, duration, albumId,
       } = request.payload;
       const { id } = request.params;
 
@@ -118,6 +152,7 @@ class SongsHandler {
         genre,
         performer,
         duration,
+        albumId,
       });
 
       return {
