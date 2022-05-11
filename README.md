@@ -1,4 +1,4 @@
-# OpenMusic API versi 1
+# OpenMusic API versi 2
 
 A project for submission in DICODING
 
