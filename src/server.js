@@ -16,7 +16,7 @@ const SongValidator = require('./validator/songs');
 // User
 const users = require('./api/users');
 const UsersService = require('./services/UsersService');
-const UserValidator = require('./validator/users');
+const UsersValidator = require('./validator/users');
 
 // Authentication
 const authentications = require('./api/authentications');
@@ -83,7 +83,7 @@ const init = async () => {
       plugin: users,
       options: {
         service: usersService,
-        validator: UserValidator,
+        validator: UsersValidator,
       },
     },
     {

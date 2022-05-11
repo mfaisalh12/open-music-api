@@ -5,6 +5,10 @@ class UserHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
+
+    this.postUserHandler = this.postUserHandler.bind(this);
+    this.getUserByIdHandler = this.getUserByIdHandler.bind(this);
+    this.getUsersByUsernameHandler = this.getUsersByUsernameHandler.bind(this);
   }
 
   async postUserHandler(request, h) {
@@ -12,7 +16,7 @@ class UserHandler {
       this._validator.validateUserPayload(request.payload);
       const { username, password, fullname } = request.payload;
 
-      const userId = await this._server.addUser({ username, password, fullname });
+      const userId = await this._service.addUser({ username, password, fullname });
 
       const response = h.response({
         status: 'success',
@@ -33,10 +37,10 @@ class UserHandler {
         return response;
       }
 
-      // server error
+      // Server ERROR!
       const response = h.response({
         status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);
@@ -66,10 +70,10 @@ class UserHandler {
         return response;
       }
 
-      // server error
+      // server ERROR!
       const response = h.response({
         status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);
@@ -77,10 +81,10 @@ class UserHandler {
     }
   }
 
-  async getUserByUsernameHandler(request, h) {
+  async getUsersByUsernameHandler(request, h) {
     try {
       const { username = '' } = request.query;
-      const users = await this._service.getUserByUsername(username);
+      const users = await this._service.getUsersByUsername(username);
       return {
         status: 'success',
         data: {
@@ -97,10 +101,10 @@ class UserHandler {
         return response;
       }
 
-      // server error
+      // Server ERROR!
       const response = h.response({
         status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);

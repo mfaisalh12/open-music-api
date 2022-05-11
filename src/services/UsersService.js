@@ -21,15 +21,15 @@ class UsersService {
     const result = await this._pool.query(query);
 
     if (result.rows.length > 0) {
-      throw InvariantError('Gagal menambahkan user. Username sudah digunakan.');
+      throw new InvariantError('Gagal menambahkan user. Username sudah digunakan.');
     }
   }
 
   async addUser({ username, password, fullname }) {
-    // TODO: verifikasi username, make sure the user haven't registered
+    // TODO: verifikasi username, pastikan belum terdaftar
     await this.verifyNewUsername(username);
 
-    // TODO: if verification pass, then input new user to database
+    // TODO: Bila verifikasi lolos, maka masukkan user baru ke database.
     const id = `user-${nanoid(16)}`;
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = {
@@ -56,10 +56,11 @@ class UsersService {
     if (!result.rows.length) {
       throw new NotFoundError('User tidak ditemukan');
     }
+
     return result.rows[0];
   }
 
-  async getUserByUsername(username) {
+  async getUsersByUsername(username) {
     const query = {
       text: 'SELECT id, username, fullname FROM users WHERE username LIKE $1',
       values: [`%${username}%`],
@@ -74,17 +75,17 @@ class UsersService {
       values: [username],
     };
 
-    const { result } = await this._pool.query(query);
+    const result = await this._pool.query(query);
 
     if (!result.rows.length) {
-      throw new AuthenticationError('Kredensial yang anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
 
     const { id, password: hashedPassword } = result.rows[0];
     const match = await bcrypt.compare(password, hashedPassword);
 
     if (!match) {
-      throw new AuthenticationError('Kredensial yang anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
     return id;
   }
