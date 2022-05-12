@@ -19,7 +19,7 @@ class SongsHandler {
       this._validator.validateSongPayload(request.payload);
       // prettier-ignore
       const {
-        title, year, genre, performer, duration, albumId,
+        title = 'untitled', year, genre, performer, duration, albumId,
       } = request.payload;
 
       const songId = await this._service.addSong({

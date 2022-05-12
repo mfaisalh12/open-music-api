@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
-
 exports.shorthands = undefined;
 
 exports.up = (pgm) => {
-  pgm.createTable('playlists_songs', {
+  // membuat table playlistsongs
+  pgm.createTable('playlistsongs', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    playlists_id: {
+    playlist_id: {
       type: 'VARCHAR(50)',
       notNull: true,
     },
@@ -19,22 +19,22 @@ exports.up = (pgm) => {
   });
 
   pgm.addConstraint(
-    'playlists_songs',
-    'unique_playlists_id_and_song_id',
-    'UNIQUE(playlists_id, song_id)',
+    'playlistsongs',
+    'unique_playlist_id_and_song_id',
+    'UNIQUE(playlist_id, song_id)',
   );
   pgm.addConstraint(
-    'playlists_songs',
-    'fk_playlists_songs.playlist_id_playlists.id',
-    'FOREIGN KEY(playlists_id) REFERENCES playlists(id) ON DELETE CASCADE',
+    'playlistsongs',
+    'fk_playlistsongs.playlist_id_playlists.id',
+    'FOREIGN KEY(playlist_id) REFERENCES playlists(id) ON DELETE CASCADE',
   );
   pgm.addConstraint(
-    'playlists_songs',
-    'fk_playlists_songs.song_id_songs.id',
+    'playlistsongs',
+    'fk_playlistsongs.song_id_songs.id',
     'FOREIGN KEY(song_id) REFERENCES songs(id) ON DELETE CASCADE',
   );
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('playlists_songs');
+  pgm.dropTable('playlistsongs');
 };
