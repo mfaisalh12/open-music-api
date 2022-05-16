@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 const { Pool } = require('pg');
 const { nanoid } = require('nanoid');
-const AuthorizationError = require('../exceptions/AuthorizationError');
-const InvariantError = require('../exceptions/InvariantError');
-const NotFoundError = require('../exceptions/NotFoundError');
+const AuthorizationError = require('../../exceptions/AuthorizationError');
+const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 // const { mapDBtoPlaylistSongModel } = require('../utils');
 
 class PlaylistsService {

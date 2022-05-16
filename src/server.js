@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
@@ -5,29 +6,34 @@ const Jwt = require('@hapi/jwt');
 
 // Album
 const albums = require('./api/albums');
-const AlbumsService = require('./services/AlbumsService');
+const AlbumsService = require('./services/postgres/AlbumsService');
 const AlbumValidator = require('./validator/albums');
 
 // Song
 const songs = require('./api/songs');
-const SongsService = require('./services/SongsService');
+const SongsService = require('./services/postgres/SongsService');
 const SongValidator = require('./validator/songs');
 
 // User
 const users = require('./api/users');
-const UsersService = require('./services/UsersService');
+const UsersService = require('./services/postgres/UsersService');
 const UsersValidator = require('./validator/users');
 
 // Authentication
 const authentications = require('./api/authentications');
-const AuthenticationsService = require('./services/AuthenticationsService');
+const AuthenticationsService = require('./services/postgres/AuthenticationsService');
 const TokenManager = require('./tokenize/TokenManager');
 const AuthenticationValidator = require('./validator/authentications');
 
 // Playlists
 const playlists = require('./api/playlists');
-const PlaylistsService = require('./services/PlaylistsService');
+const PlaylistsService = require('./services/postgres/PlaylistsService');
 const PlaylistValidator = require('./validator/playlists');
+
+// Exports
+const _exports = require('./api/exports');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validator/exports');
 
 const init = async () => {
   const albumsService = new AlbumsService();
@@ -107,6 +113,14 @@ const init = async () => {
         playlistsService,
         songsService,
         validator: PlaylistValidator,
+      },
+    },
+    {
+      plugin: _exports,
+      options: {
+        playlistsService,
+        producerService: ProducerService,
+        validator: ExportsValidator,
       },
     },
   ]);
