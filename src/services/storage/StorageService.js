@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-
 const fs = require('fs');
 
 class StorageService {

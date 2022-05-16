@@ -32,7 +32,7 @@ class AlbumsService {
 
   async getAlbumById(id) {
     const query = {
-      text: 'SELECT id,name,year FROM albums WHERE id = $1',
+      text: 'SELECT id,name,year,cover_url FROM albums WHERE id = $1',
       values: [id],
     };
     const result = await this._pool.query(query);
@@ -68,6 +68,19 @@ class AlbumsService {
 
     if (!result.rows.length) {
       throw new NotFoundError('Album gagal dihapus. Id tidak ditemukan');
+    }
+  }
+
+  async addAlbumCoverById(id, cover) {
+    const query = {
+      text: 'UPDATE albums SET cover_url = $1 WHERE id = $2 RETURNING id',
+      values: [cover, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError('Gagal memperbarui cover. Id tidak ditemukan');
     }
   }
 }
